@@ -1,0 +1,5 @@
+* implement the configuration and control for the Timer peripheral
+* implement the configuration and control for the System Timer peripheral
+* implement the configuration and control for the SPI0/1/2 peripherals
+* implement the configuration and control for the PCM peripheral
+* implement the configuration and control for the UART0/1 peripherals
