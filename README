@@ -1,3 +1,5 @@
+1. Introduction
+---------------
 PiLowLib is a library that provides low level access to the
 peripherals of the Raspberry PI. Currently, besides the raw access
 to the registers, the following peripherals are supported:
@@ -10,14 +12,36 @@ it uses direct access to the Raspberry PI's
 peripherals registers. Moreover, it's completely
 written in Python and does not need any C compiling.
 
-To get started take a look over the examples directory.
-
 PiLowLib was written by Calin Crisan <ccrisan@gmail.com>
 and is released under LGPLv3 license.
-
-You can always download the latest source code from github:
-    https://github.com/ccrisan/pilowlib
 
 Parts of this library were inspired from the wiringPi project
 written by Gordon Henderson.
 (https://projects.drogon.net/raspberry-pi/wiringpi/)
+
+2. Installing
+-------------
+The library works exclusively on a Raspberry PI device
+and it requires full root access to `/dev/mem'.
+Therefore it is strongly recommended not to install it on any
+other type of machine.
+
+You can always download the latest source code from github:
+    https://github.com/ccrisan/pilowlib
+
+For testing purposes you can just use the library from its
+download location, by setting the PYTHONPATH accordingly:
+    export PYTHONPATH=$PYTHONPATH:/path/to/pilowlib
+
+If you want to install it on the system, just run the following 
+command (as root):
+    python setup.py install
+
+3. Getting started
+------------------
+A couple of source code samples were included in the
+`examples' directory. This is a good point to get started.
+More details on how the hardware and peripherals worok can
+always be found by reading the datasheet:
+    http://www.designspark.com/files/ds/supporting_materials/Broadcom%20BCM2835.pdf
+
