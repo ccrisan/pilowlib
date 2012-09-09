@@ -15,6 +15,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with PiLowLib.  If not, see <http://www.gnu.org/licenses/>.
 
+# This example shows how to configure and control
+# the first PWM peripheral (PWM0) in a Raspberry PI using PiLowLib,
+# setting the PWM output to GPIO number 18.
+
 from pilowlib import funcs, pwm, clock
 
 

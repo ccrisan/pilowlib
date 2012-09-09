@@ -15,6 +15,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with PiLowLib.  If not, see <http://www.gnu.org/licenses/>.
 
+# This example shows how to configure and read/write two GPIO pins (18 and 23),
+# one as a digital output and the other as a digital input.
+
 from pilowlib import funcs, digital
 
 
