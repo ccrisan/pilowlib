@@ -20,6 +20,53 @@
 
 import funcs
 import regs
+import utils
+
+
+def configure(gpio, pull):
+    '''Configures the pull-up/down for the specified GPIO pin.
+    @param gpio: the number of the GPIO pin
+    @param pull: set to True to enable pull-up,
+    False to enable pull-down or
+    None to disable the pull function.
+    '''
+
+    if gpio < 0 or gpio > funcs.MAX_GPIO:
+        raise Exception('Invalid GPIO number')
+
+    if pull: # pull-up
+        regs.GPPUD = 2
+
+    elif pull is False: # pull-down
+        regs.GPPUD = 1
+
+    else: # None - disable pull
+        regs.GPPUD = 0
+
+    utils.nanosleep(0, 5)
+
+    reg_no = gpio // 32
+    bit_no = gpio % 32
+
+    if reg_no == 0:
+        regs.GPPUDCLK0 = 1 << bit_no
+
+    else:
+        regs.GPPUDCLK1 = 1 << bit_no
+
+    utils.nanosleep(0, 5)
+
+    regs.GPPUD = 0
+
+    utils.nanosleep(0, 5)
+
+    if reg_no == 0:
+        regs.GPPUDCLK0 = 0
+
+    else:
+        regs.GPPUDCLK1 = 0
+
+    utils.nanosleep(0, 5)
 
 
 def set_value(gpio, value):
@@ -27,7 +74,7 @@ def set_value(gpio, value):
     @param gpio: the number of the GPIO pin
     @param value: a boolean indicating the new pin value
     '''
-    
+
     if gpio < 0 or gpio > funcs.MAX_GPIO:
         raise Exception('Invalid GPIO number')
 
@@ -38,14 +85,14 @@ def set_value(gpio, value):
         if reg_no == 0:
             regs.GPSET0 = 1 << bit_no
 
-        elif reg_no == 1:
+        else:
             regs.GPSET1 = 1 << bit_no
 
     else:
         if reg_no == 0:
             regs.GPCLR0 = 1 << bit_no
 
-        elif reg_no == 1:
+        else:
             regs.GPCLR1 = 1 << bit_no
 
 
@@ -54,7 +101,7 @@ def get_value(gpio):
     GPIO pin.
     @param gpio: the number of the GPIO pin
     '''
-    
+
     if gpio < 0 or gpio > funcs.MAX_GPIO:
         raise Exception('Invalid GPIO number')
 
@@ -64,5 +111,5 @@ def get_value(gpio):
     if reg_no == 0:
         return bool(regs.GPLEV0 & (1 << bit_no))
 
-    elif reg_no == 1:
+    else:
         return bool(regs.GPLEV1 & (1 << bit_no))
