@@ -15,25 +15,20 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with PiLowLib.  If not, see <http://www.gnu.org/licenses/>.
 
-# This example shows how to configure and read/write two GPIO pins (18 and 23),
-# one as a digital output and the other as a digital input.
+# This example shows how to configure and control
+# the first general purpose clock (GPCLK0) in a Raspberry PI using PiLowLib,
+# setting the clock output to GPIO number 4.
 
-from pilowlib import funcs, digital
+from pilowlib import funcs, clock
 
 
-# sets the GPIO pin 18 to digital out
-funcs.set_gpio_func(18, funcs.DIGITAL_OUT)
+# sets the GPIO pin 4 to GPCLK0
+funcs.set_gpio_func(4, funcs.GPCLK0)
 
-# sets the GPIO pin 23 to digital in
-funcs.set_gpio_func(23, funcs.DIGITAL_IN)
+# set the GPCLK0 source to oscillator (said to be 19.2 MHz),
+# and the divider to 32, resulting a 19.2MHz/32 = 600KHz
+clock.configure(0, clock.SRC_OSC, 32)
 
-# sets the GPIO pin 18 to 'high' 
-digital.set_value(18, True)
+# start the GPCLK0 peripheral
+clock.start(0)
 
-# reads the level of the GPIO pin 23 
-value = digital.get_value(23)
-if value:
-    print('GPIO 23 is high')
-    
-else:
-    print('GPIO 23 is low')
