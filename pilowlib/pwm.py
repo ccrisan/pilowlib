@@ -17,7 +17,7 @@
 
 '''Provides easy configuration and control for the two
 PWM peripherals of the RPi.
-There are two PWM peripherals numbered from 0 to 2.
+There are two PWM peripherals numbered 0 and 1.
 '''
 
 import clock
@@ -27,8 +27,7 @@ import regs
 def configure(pwm_no, serial_mode=False, ms_mode=False, use_fifo=False, rep_fifo=False, high_off=False, rev_polarity=False):
     '''Configures a PWM peripheral (without starting it).
     For further information on the way PWM works on the RPi,
-    please refer to the BCM 2835 peripheral datasheet
-    (http://www.designspark.com/files/ds/supporting_materials/Broadcom%20BCM2835.pdf).
+    please refer to the BCM 2835 peripheral datasheet.
     @param pwm_no: the identifier of the PWM peripheral (0 or 1)
     @param serial_mode: set to True to use the 'serializer' mode
     instead of the 'PWM' mode

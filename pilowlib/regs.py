@@ -16,8 +16,7 @@
 # along with PiLowLib.  If not, see <http://www.gnu.org/licenses/>.
 
 '''This module provides raw access to the registers of the
-RPi peripherals, as documented in BCM2835.pdf
-(http://www.designspark.com/files/ds/supporting_materials/Broadcom%20BCM2835.pdf).
+RPi peripherals, as documented in the BCM2835 datasheet.
 '''
 
 import mmap
@@ -35,8 +34,7 @@ _CLK_BASE =          0x00101000 # Clock regs offset address
 _GPIO_BASE =         0x00200000 # GPIO regs offset address
 _UART_BASE =         0x00201000 # UART regs offset address
 _PCM_BASE =          0x00203000 # PCM regs offset address
-_SPI_BASE =          0x00204000 # SPI regs offset address
-_BSC0_BASE =         0x00205000 # BSC0 regs offset address
+_SPI0_BASE =         0x00204000 # SPI0 regs offset address
 _BSC0_BASE =         0x00205000 # BSC0 regs offset address
 _PWM_BASE =          0x0020C000 # PWM regs offset address
 _BSC_SPI_BASE =      0x00214000 # BSC SPI regs offset address
@@ -49,6 +47,7 @@ _clk_mem = [] # provides raw access to the Clock regs mapped memory
 _gpio_mem = [] # provides raw access to the GPIO regs mapped memory
 _pcm_mem = [] # provides raw access to the PCM regs mapped memory
 _pwm_mem = [] # provides raw access to the PWM regs mapped memory
+_spi0_mem = [] # provides raw access to the SPI0 regs mapped memory
 
 
 def _map_periph_memory():
@@ -104,6 +103,15 @@ def _map_periph_memory():
             prot=mmap.PROT_READ | mmap.PROT_WRITE,
             offset=_BCM2708_PERI_BASE + _PWM_BASE)
 
+    # map the PWM
+    global _spi0_mem
+    _spi0_mem = mmap.mmap(
+            dev_mem,
+            length=_PAGE_SIZE,
+            flags=mmap.MAP_SHARED,
+            prot=mmap.PROT_READ | mmap.PROT_WRITE,
+            offset=_BCM2708_PERI_BASE + _SPI0_BASE)
+
 
 class _Register(object):
     '''Represents a single register.
@@ -134,6 +142,7 @@ class _Register(object):
             'gpio': _gpio_mem,
             'pcm': _pcm_mem,
             'pwm': _pwm_mem,
+            'spi0': _spi0_mem,
         }[self.periph]
         
     def get(self):
@@ -141,13 +150,13 @@ class _Register(object):
         
         s = self.mem[self.offs:self.offs + self.len]
         
-        return struct.unpack('i', s)[0]
+        return struct.unpack('I', s)[0]
 
     def set(self, value):
         '''Sets the value of the register.
         @param value: the value (an integer) to set'''
         
-        s = struct.pack('i', value)
+        s = struct.pack('I', value)
         
         self.mem[self.offs:self.offs + self.len] = s
 
@@ -256,6 +265,14 @@ PWMDAT0 = _Register('pwm', 0x14)
 PWMFIF = _Register('pwm', 0x18)
 PWMRNG1 = _Register('pwm', 0x20)
 PWMDAT1 = _Register('pwm', 0x24)
+
+# SPI0 registers
+SPI0CS = _Register('spi0', 0x00)
+SPI0FIFO = _Register('spi0', 0x04)
+SPI0CLK = _Register('spi0', 0x08)
+SPI0DLEN = _Register('spi0', 0x0C)
+SPI0LTOH = _Register('spi0', 0x10)
+SPI0DC = _Register('spi0', 0x04)
 
 # perform the memory mappings, as well as
 # wrapping the module as soon as the module

@@ -36,7 +36,7 @@ SRC_HDMI_AUX = 7
 def configure(clock_no, src, div):
     '''Sets a clock's source and divisor.
     @param clock_no: the identifier of the clock (0, 1, 2 or 'pwm')
-    @param src: 
+    @param src: the clock source, one of the SRC_* constants
     '''
 
     if clock_no != 'pwm' and (clock_no < 0 or clock_no > 2):

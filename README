@@ -5,6 +5,7 @@ peripherals of the Raspberry PI. Currently, besides the raw access
 to the registers, the following peripherals are supported:
     * simple digital I/O
     * PWM
+    * SPI
     * clocks
 
 PiLowLib is fast and performant due to the fact that
