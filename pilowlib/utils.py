@@ -25,7 +25,16 @@ import ctypes
 # we define a nanosleep() function by importing it
 # directly from libc (using ctypes);
 # this code is partly taken from the Zope project
-_libc = ctypes.CDLL('libc.so.6')
+_libc_variants = ['libc.so.6', 'libc.so.5', 'libc.so.0', 'libc.so']
+
+for _variant in _libc_variants:
+    try:
+        _libc = ctypes.CDLL(_variant)
+        break
+    
+    except OSError:
+        continue
+
 
 class __timespec(ctypes.Structure):
     _fields_ = [('secs', ctypes.c_long), ('nsecs', ctypes.c_long)]
